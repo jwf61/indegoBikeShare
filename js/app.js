@@ -64,48 +64,52 @@
     var options = {
         pointToLayer: function(feature, d) {
             return L.circleMarker(d, {
-                opacity: 1,
+                opacity: .9,
                 weight: 2,
-                fillOpacity: .3,
+                fillOpacity: 0,
             })
         
         }
     }
     
-    //draw data, 1 layer for boys, 1 for girls
     function drawMap(data){
         //creating geoJson markers
         var stationStart = L.geoJson(data, options).addTo(map);
-       
+        var stationEnd = L.geoJson(data, options).addTo(map);
         stationStart.setStyle({
-            color: '#73d686',
-            fillColor: '#3781b7'
+            color: '#17b936',
+        });
+        stationEnd.setStyle({
+            color: '#38375a',
         });
         
-        resizeCircles(stationStart, 1);
-        sequenceUI(stationStart);
-        
-    }
-    function calcRadius(val) {
-        var radius = Math.sqrt(val / Math.PI);
-        return radius * 2; // adjust .5 as a scale factor
+        resizeCircles(stationStart, stationEnd, 0);
+        sequenceUI(stationStart, stationEnd);        
     }
     
-    function resizeCircles(stationStart, currentHour) {
+    function calcRadius(val) {
+        var radius = Math.sqrt(val / Math.PI);
+        return radius * 2; 
+    }
+    
+    function resizeCircles(stationStart, stationEnd, currentHour) {
 
         stationStart.eachLayer(function(layer) {
             var radius = calcRadius(Number(layer.feature.properties['hour' + currentHour]));
             layer.setRadius(radius);
         });
+        stationEnd.eachLayer(function(layer) {
+            var radius = calcRadius(Number(layer.feature.properties['endHour' + currentHour]));
+            layer.setRadius(radius);
+        });
         retrieveInfo(stationStart, currentHour);
-        //retrieveGrade(currentHour)
     }
     
-    function sequenceUI(stationStart, boysLayer){
+    function sequenceUI(stationStart, stationEnd){
         $('.slider')
             .on('input change', function() {
                 var currentHour = $(this).val();
-                resizeCircles(stationStart, currentHour);
+                resizeCircles(stationStart, stationEnd, currentHour);
             });
         // create Leaflet control for the slider
             var sliderControl = L.control({
@@ -133,9 +137,9 @@
     legend.addTo(map);
         
         var dataValues = [];
-        data.features.map(function (school) {
-                for (var grade in school.properties) {
-                    var attribute = school.properties[grade];
+        data.features.map(function (station) {
+                for (var hour in station.properties) {
+                    var attribute = station.properties[hour];
                     if (Number(attribute)) {
                         dataValues.push(attribute);
                     }
@@ -203,9 +207,10 @@
             var props = e.layer.feature.properties;
 
             $('#info span').html(props.stationName);
-            $(".girls span:first-child").html('(grade ' + currentHour + ')');
-            $(".girls span:last-child").html(props['G' + currentHour]);
-            
+            $(".Trips Starting span:first-child").html('(hour ' + currentHour + ')');
+            $(".Trips Ending span:first-child").html('(endHour ' + currentHour + ')');
+            $(".Trips Starting span:last-child").html(props['hour' + currentHour]);
+            $(".Trips Ending span:last-child").html(props['endHour' + currentHour]);
             // raise opacity level as visual affordance
             e.layer.setStyle({
                 fillOpacity: .6
@@ -214,7 +219,7 @@
                 
         // hide the info panel when mousing off layergroup and remove affordance opacity
         startStation.on('mouseout', function(e) {
-            info.hide();
+            $("info").hide();
             e.layer.setStyle({
                 fillOpacity: 0
             });
@@ -240,19 +245,30 @@
                 });
             }
         
-//            var stationValues = [],
-//
-//            for (var i = 1; i <= 8; i++) {
-//                stationValues.push(props['hour' + i])
-//            }
-//            $('.girlspark').sparkline(girlsValues, {
-//                width: '160px',
-//                height: '30px',
-//                lineColor: '#D96D02',
-//                fillColor: '#d98939 ',
-//                spotRadius: 0,
-//                lineWidth: 2
-//            });
+            var startValues = [],
+                endValues = [];
+
+            for (var i = 1; i <= 23; i++) {
+                startValues.push(props['hour' + i]);
+                endValues.push(props['endHour' + i]);
+            }
+            $('.startspark').sparkline(startValues, {
+                width: '160px',
+                height: '30px',
+                lineColor: '#17b936',
+                fillColor: '#3c7246 ',
+                spotRadius: 0,
+                lineWidth: 2
+            });
+
+            $('.endspark').sparkline(endValues, {
+                width: '160px',
+                height: '30px',
+                lineColor: '#6E77B0',
+                fillColor: '#55596d',
+                spotRadius: 0,
+                lineWidth: 2
+            });
 
          
         });
