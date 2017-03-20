@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=utf-8 />
+    <title>Indego Bike Share</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+    <link href='https://api.mapbox.com/mapbox-assembly/v0.8.0/assembly.min.css' rel='stylesheet'>
+    <link href='https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.css' rel='stylesheet' />
+    <link href='css/styles.css' rel='stylesheet' />
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,500,600' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+    
+    <div class='grid'>
+        <div class='col col--12 col--3-ml p12 pb6 viewport-third viewport-full-ml'>
+            <div class='h-full scroll-auto'>
+                <h1 class='txt-headline mb6'>Day in the Life of the Indego Bike Share</h1>
+                <p></p>
+                <h2 class='txt-xl mt18 mb12'>Hour by Hour Use of the Indego Bike Share in Philadelphia, July-September 2016 </h2>
+                <p>kajflkjdlf alksdflkadlfjals fajdflk asdflkajfjaldskf;lasdf lkasfjlkajsdlfk asl;df ja;lsdkfjlaksjfl;a jsdf;ljadslkfj;alsdfja;lskfj;alksdfj;lakdjflaksdjf;lasdjflajf</p>
+                <footer class='mt12 bg-gray-light border border--gray-dark inline-block round px18 txt-s'>
+                    <ul>
+                        <li>Data from <a class='link' href='https://www.rideindego.com/about/data/'>Ride Indego</a></li>
+                        <li>Map authored by Jeremy Fisher</li>
+                        </p>
+                </footer>
+            </div>
+        </div>
+        <div class='col col--12 col--9-ml h180 h-full-ml'>
+            <div id="map" class='viewport-twothirds viewport-full-ml'></div>
+
+            <!-- ui slider -->
+            <div id='slider' class='range w240 bg-green-light border border--gray-dark  round-ml txt-bold p24'>
+                <label for="min"> Slider for hours in day</label>
+                <input type='range' min="0", max="23", value="1", step="1" class="slider" />
+            </div>
+            
+            <!-- legend -->
+            <div id='legend' class='bg-teal-dark border border--gray-dark inline-block round -ml p18'>
+                    <h3 class='txt-bold mb12 w-full mx-auto'>Legend</h3>
+                    <h4 class = mb12 w-full mx-auto>Number of Trips Started in the Hour</h4>
+                <div class='legend-circles relative w180 wmax180'>
+                    <div class="legend-large border border--bg-darken50 absolute"></div>
+                    <div class="legend-small border border--bg-darken50 absolute"></div>
+                    <div class="legend-large-label txt-m absolute"></div>
+                    <div class="legend-small-label txt-m absolute"></div>
+                    <div class="legend-small-label txt-m absolute"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+   <div id='info' class='py6 px12 bg-teal-dark border border--gray-light inline-block round absolute wmax200 none'>
+        <p>Station: <span></span></p>
+        <p class='girls'>girls <span></span>: <span class='txt-l txt-bold'></span></p>
+        <p class='boys'>boys <span></span>: <span class='txt-l txt-bold'></span></p>
+        <hr class='txt-hr'>
+        <p class='my6'>trend: grades 1 &ndash; 8</p>
+        <p class='mb6'><span class='girlspark'></span></p>
+        <p><span class='yearspark'></span></p>
+    </div>
+    
+    
+    
+    
+    
+<script async defer src="https://api.mapbox.com/mapbox-assembly/v0.8.0/assembly.js"></script>
+<script src='https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.js'></script>
+<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
+<script src='js/app.js'></script>
+<script src='https://code.jquery.com/jquery-3.1.1.min.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min.js"></script>
+
+</body>
+
+</html>

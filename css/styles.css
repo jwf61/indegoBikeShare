@@ -1,0 +1,25 @@
+/* custom CSS rules */
+.legend-large, .legend-small {
+    border-radius: 50%;
+}
+hr.small, hr.large {
+    width: 83px;
+    top: -8px;
+    left: 55px;
+    position: absolute;
+    border: 1px solid #ccc;     /* overwrite assembly.css rule */
+    margin-top: 8px;            /* overwrite assembly.css rule */
+    color: black,
+}
+
+.stations2016 {
+    color: #1bdb8a;
+}
+
+body {
+    font-family: "Source Sans Pro", sans-serif;
+    background-color: #3c8365
+}
+.slider {
+    font-family: "Source Sans Pro", sans-serif;
+}
