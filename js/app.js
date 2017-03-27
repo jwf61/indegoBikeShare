@@ -7,10 +7,10 @@
         // create the Leaflet map using mapbox.light tiles
     var map = L.mapbox.map('map', 'mapbox.streets', {
         zoomSnap: .1,
-        center: [39.958, -75.16],
-        zoom: 13.5,
-        minZoom: 6,
-        maxZoom: 15,
+        center: [39.96, -75.16],
+        zoom: 13.9,
+        minZoom: 12,
+        maxZoom: 16,
         //maxBounds: L.latLngBounds([-6.22, 27.72],[5.76, 47.83])
     });
     
@@ -28,10 +28,9 @@
         }
     // create Leaflet control for the slider
     var sliderControl = L.control({
-        position: 'bottomleft'
+        position: 'bottomright'
     });
 
-    // when added to the map
     sliderControl.onAdd = function(map) {
 
         // select the element with id of 'slider'
@@ -45,10 +44,23 @@
         return controls;
 
     }
-
-    // add the control to the map
-    sliderControl.addTo(map);
     
+   //hourCounter.addTo(map);
+    
+    var hourControl = L.control({
+        position: 'bottomright'
+    });
+
+    hourControl.onAdd = function(map) {
+
+        var controls = L.DomUtil.get("hourCounter");
+
+        L.DomEvent.disableScrollPropagation(counter);
+        L.DomEvent.disableClickPropagation(counter);
+
+        return counter;
+    }
+       
     // load CSV data
     omnivore.csv('data/tripsByHourStation.csv')
         .on('ready', function(e) {
@@ -84,7 +96,8 @@
         });
         
         resizeCircles(stationStart, stationEnd, 0);
-        sequenceUI(stationStart, stationEnd);        
+        sequenceUI(stationStart, stationEnd);      
+        hourUI(stationStart);
     }
     
     function calcRadius(val) {
@@ -103,17 +116,30 @@
             layer.setRadius(radius);
         });
         retrieveInfo(stationStart, currentHour);
+        retrieveInfoEnd(stationEnd, currentHour);
     }
     
-    function sequenceUI(stationStart, stationEnd){
+    function hourUI(stationStart, currentHour) {
+        stationStart.eachLayer(function (layer) {
+        var props = layer.feature.properties;
+        $(".Hour span").html(currentHour );
+        });
+    };
+                                        
+    function sequenceUI(stationStart, stationEnd, currentHour){
         $('.slider')
             .on('input change', function() {
                 var currentHour = $(this).val();
                 resizeCircles(stationStart, stationEnd, currentHour);
             });
-        // create Leaflet control for the slider
-            var sliderControl = L.control({
-                position: 'bottomleft'
+//        // create Leaflet control for the slider
+//            var sliderControl = L.control({
+//                position: 'bottomleft'
+//            })
+        $('.counter')
+            .on('input change', function() {
+                var currentHour = $(this);
+                hourUI(stationStart, currentHour)
             });
     }
 
@@ -151,7 +177,7 @@
         });
 
         // round the highest number and use as our large circle diameter
-        var maxValue = Math.round(sortedValues[0] / 1000) * 1000;
+        var maxValue = Math.round(sortedValues[0] / 1000) * 800;
 
 
         // calc the diameters
@@ -192,25 +218,25 @@
 
         // insert a couple hr elements and use to connect value label to top of each circle
         $("<hr class='large'>").insertBefore(".legend-large-label")
-        $("<hr class='small'>").insertBefore(".legend-small-label").css('top', largeDiameter - smallDiameter - 8);
+        $("<hr class='small'>").insertBefore(".legend-small-label").css('top', largeDiameter - smallDiameter - 10);
     
     }
     function retrieveInfo(startStation, currentHour){
         var info = $('#info');
         
-        $(".info").hide();//hides info window until county is selected
+        //$(".info").hide();//hides info window until county is selected
         
-        startStation.on('mouseover', function(e) {
+            startStation.on('mouseover', function(e) {
 
             info.removeClass('none').show();
-
+            
             var props = e.layer.feature.properties;
 
-            $('#info span').html(props.stationName);
-            $(".Trips Starting span:first-child").html('(hour ' + currentHour + ')');
-            $(".Trips Ending span:first-child").html('(endHour ' + currentHour + ')');
-            $(".Trips Starting span:last-child").html(props['hour' + currentHour]);
-            $(".Trips Ending span:last-child").html(props['endHour' + currentHour]);
+             $('#info span').html(props.stationName);
+            $(".Starting span:first-child").html('(hour ' + currentHour + ')');
+            $(".Ending span:first-child").html('(endHour ' + currentHour + ')');
+            $(".Starting span:last-child").html(props['hour' + currentHour]);
+            $(".Ending span:last-child").html(props['endHour' + currentHour]);
             // raise opacity level as visual affordance
             e.layer.setStyle({
                 fillOpacity: .6
@@ -219,13 +245,16 @@
                 
         // hide the info panel when mousing off layergroup and remove affordance opacity
         startStation.on('mouseout', function(e) {
+            info.removeClass('none').hide();
+            info.hide();
             $("info").hide();
             e.layer.setStyle({
-                fillOpacity: 0
+                fillOpacity: 0,
+                            
             });
         });
         // when the mouse moves on the document
-        $(document).mousemove(function(e) {
+        $(document).mouseover(function(e) {
             // first offset from the mouse position of the info window
             info.css({
                 "left": e.pageX + 6,
@@ -277,8 +306,95 @@
         
         
     }
+    function retrieveInfoEnd(endStation, currentHour){
+        var info = $('#info');
+        
+        //$(".info").hide();//hides info window until county is selected
+        
+            endStation.on('mouseover', function(e) {
+
+            info.removeClass('none').show();
+            
+            var props = e.layer.feature.properties;
+
+            $('#info span').html(props.stationName);
+            $(".Starting span:first-child").html('(hour ' + currentHour + ')');
+            $(".Ending span:first-child").html('(endHour ' + currentHour + ')');
+            $(".Starting span:last-child").html(props['hour' + currentHour]);
+            $(".Ending span:last-child").html(props['endHour' + currentHour]);
+            // raise opacity level as visual affordance
+            e.layer.setStyle({
+                fillOpacity: .6
+            });
+
+                
+        // hide the info panel when mousing off layergroup and remove affordance opacity
+        endStation.on('mouseout', function(e) {
+            info.removeClass('none').hide();
+            info.hide();
+            $("info").hide();
+            e.layer.setStyle({
+                fillOpacity: 0
+                
+            });
+        });
+        // when the mouse moves on the document
+        $(document).mouseover(function(e) {
+            // first offset from the mouse position of the info window
+            info.css({
+                "left": e.pageX + 6,
+                "top": e.pageY - info.height() - 25
+            });
+
+            // if it crashes into the top, flip it lower right
+            if (info.offset().top < 4) {
+                info.css({
+                    "top": e.pageY + 15
+                });
+            }
+            // if it crashes into the right, flip it to the left
+            if (info.offset().left + info.width() >= $(document).width() - 40) {
+                info.css({
+                    "left": e.pageX - info.width() - 80
+                });
+            }
+        
+            var startValues = [],
+                endValues = [];
+
+            for (var i = 1; i <= 23; i++) {
+                startValues.push(props['hour' + i]);
+                endValues.push(props['endHour' + i]);
+            }
+            $('.startspark').sparkline(startValues, {
+                width: '160px',
+                height: '30px',
+                lineColor: '#17b936',
+                fillColor: '#3c7246 ',
+                spotRadius: 0,
+                lineWidth: 2
+            });
+
+            $('.endspark').sparkline(endValues, {
+                width: '160px',
+                height: '30px',
+                lineColor: '#6E77B0',
+                fillColor: '#55596d',
+                spotRadius: 0,
+                lineWidth: 2
+            });
+
+         
+        });
+        }); 
+        
+        
+        
+    }
+    // when added to the map
     
-    
+    sliderControl.addTo(map);
+    hourControl.addTo(map)
     
     
     })();
