@@ -19,12 +19,13 @@
             <div class='h-full scroll-auto'>
                 <h1 class='txt-headline mb6'>Indego Bike Share, a Day In the Life</h1>
                 <p></p>
-                <h2 class='txt-xl mt18 mb12'>Hour by Hour Use of the Indego Bike Share in Philadelphia, July-September 2016 </h2>
-                <p>This map enables the user to visualize the use of the Indego Bike Share by station over the course of a 3 month period, grouped by every hour of the day. These data points include all rides from a hour block (3pm - 4pm, for example) throughout all 3 months.</p>
+                <h2 class='txt-xl mt18 mb12'>Hourly use of the Indego Bike Share in Philadelphia, July - September 2016 </h2>
+                <p class="color-purple-dark txt-bold"> Move slider to change hour</p>
+                <p>This map enables the user to visualize the number trips beginning and ending at each of the Indego Bike station over the course of a 3 month period. The data is grouped by every hour of the day, or hour blocks. These data points include all rides from a hour block (3pm - 4pm, for example) throughout all 3 months.</p>
                 <img src="images/indego_station.full.jpg" alt="Bike Station" style="width:350px;height:350px;">
                 <footer class='mt12 bg-gray-light border border--gray-dark color-teal-dark inline-block round px18 txt-s'>
                     <ul>
-                        <li>Data from <a class='link' href='https://www.rideindego.com/about/data/'>Ride Indego</a></li>
+                        <li>Data from <a class='link txt-bold' href='https://www.rideindego.com/about/data/'>Ride Indego</a></li>
                         <li>Map authored by Jeremy Fisher</li>
                         </p>
                 </footer>
@@ -34,7 +35,7 @@
             <div id="map" class='viewport-twothirds viewport-full-ml'></div>
             <!-- legend -->
             <div id='legend' class='bg-teal-dark border border--gray-light inline-block round -ml p18'>
-                    <h3 class='txt-bold mb12 w-full mx-auto'>Total Trip Activity in Hour from July to September</h3>
+                    <h3 class='txt-bold mb12 w-full mx-auto'>Cumulative Trip Activity in Hour Block from July to September</h3>
                 <h4 class = mb12 w-full mx-auto></h4>
                 <div class='legend-circles relative w180 wmax180'>
                     <div class="legend-large border border--bg-darken50 absolute"></div>
@@ -45,7 +46,7 @@
                 <p><br></p>
                 <div class='flex-parent flex-parent--center-main flex-parent--center-cross align-center'>
              <div class='flex-child flex-child--grow wmin24'>
-              <span class='inline-block w24 h24 round-full bg-green-light'></span>
+              <span class='inline-block w24 h24 round-full bg-blue-light'></span>
             </div>
             <div class='flex-child flex-child--grow wmin24'>
               <span class='inline-block w24 h24 round-full bg-gray-dark'></span>
@@ -57,25 +58,25 @@
             </div>
 
             <!-- ui slider --> 
-            <div id='slider' class='range w360 px3 bg-teal-dark border border--gray-light p36 round-ml txt-bold '>
-                <label for="min">Move Slider to Change Hour <br>-Starting at Midnight<span></span></label>
+            <div id='slider' class='range w240 px3 bg-teal-dark border border--gray-light p16 round-ml txt-bold '>
+                <label for="min"><span></span></label>
                 <input type='range' min="0", max="23", value="0", step="1" class="slider" />
             </div>
-            <!--counter-->
-<!--
-            <div id='counter' class='input[readonly] w180 py3 px3 bg-teal-dark border border--gray-light  round-ml txt-bold p24 '>
-                <p class='Hour'>Hour Block:<span class='txt-l txt-bold'></span></p>
+            <div id='hourBlock' class='pt6 px12 bg-teal-dark border border--gray-light round-ml'>
+                <p class='txt-bold txt-headline color-gray-light'>Hour:
+                    <span>0</span>:00-<span>0</span>:59
+                </p>
             </div>
--->
+
         </div>
 
     </div>
    <div id='info' class='py6 px12 bg-teal-dark border border--gray-light inline-block round absolute wmax200 none'>
-       <p><b><span></span></b></p>
+      <span class='txt-l '></span>
         <p class='Starting'>Rides Starting that Hour: <span class='txt-l txt-bold'></span></p>
         <p class='Ending'>Rides Ending that Hour: <span class='txt-l txt-bold'></span></p>
         <hr class='txt-hr'>
-        <p class='my6'>Average Use Throughout Day</p>
+        <p class='my6 txt-underline'>Trend of Hourly Use</p>
         <p class='mb6'>Trips Starting<span class='startspark'></span></p>
         <p>Trips Ending<span class='endspark'></span></p>
     </div>
